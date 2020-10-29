@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DataAccess.Models;
 using DataAccess.Models.Contexts;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace TestProjectAPI.Controllers
@@ -17,11 +19,13 @@ namespace TestProjectAPI.Controllers
     {
         private readonly ApiContext _context;
         private readonly ILogger _logger;
+        private readonly IWebHostEnvironment _host;
 
-        public ProductsController(ApiContext context, ILogger<ProductsController> logger)
+        public ProductsController(ApiContext context, ILogger<ProductsController> logger, IWebHostEnvironment host)
         {
             _context = context;
             _logger = logger;
+            _host = host;
         }
 
         // GET: api/Products
@@ -112,6 +116,40 @@ namespace TestProjectAPI.Controllers
             _logger.LogInformation("Product id: {0} deleted", product.Id);
 
             return product;
+        }
+
+        // POST: api/Products/Image
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost("image")]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> SubirArchivo()
+        {
+            var file = Request.Form.Files[0];
+            var filename = Guid.NewGuid() + ".jpg";
+
+            List<IFormFile> files = new List<IFormFile> { file };
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            try
+            {
+                foreach (var formFile in files)
+                {
+                    var filePath = Path.Combine(_host.WebRootPath, "Images", filename);
+                    if (formFile.Length > 0)
+                    {
+                        await using var stream = new FileStream(filePath, FileMode.Create);
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message, ex.StackTrace });
+            }
+
+            return Ok(new { fileName = filename});
         }
 
         private bool ProductExists(int id)

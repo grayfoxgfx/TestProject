@@ -6,6 +6,7 @@ using DataAccess.Models;
 using DataAccess.Models.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,11 @@ namespace TestProjectAPI
         {
             services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase("ToysGames"));
             services.AddControllers();
-
+            services.Configure<FormOptions>(x =>
+            {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
+            });
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -90,10 +95,12 @@ namespace TestProjectAPI
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "TOYSGAMES_API V1");
                 c.RoutePrefix = string.Empty;
             });
-
+            
             app.UseCors("AddCorsPolicy");
 
             app.UseRouting();
+            
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 
@@ -112,7 +119,8 @@ namespace TestProjectAPI
                 Company= "Hasbro",
                 Description = "Buzz Light Year action figure",
                 Name = "Buzz Light Year",
-                Price = 212.50M
+                Price = 212.50M,
+                ImageUrl = "/buzz.jpg"
             };
 
             context.Products.Add(product1);

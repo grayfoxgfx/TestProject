@@ -13,5 +13,11 @@ namespace DataAccess.Models.Contexts
         }
 
         public DbSet<Product> Products { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Product>()
+                .HasIndex(p => p.Id)
+                .IsUnique();
+        }
     }
 }
