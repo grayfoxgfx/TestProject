@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProjectAPI", "TestProjectAPI\TestProjectAPI.csproj", "{D4CAE463-8522-448E-9EF4-13975D58AFA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToysGamesFront", "ToysGamesFront\ToysGamesFront.csproj", "{BA9F26FF-661C-4E4E-88D1-09FABBB0AB8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4CAE463-8522-448E-9EF4-13975D58AFA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4CAE463-8522-448E-9EF4-13975D58AFA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4CAE463-8522-448E-9EF4-13975D58AFA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4CAE463-8522-448E-9EF4-13975D58AFA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA9F26FF-661C-4E4E-88D1-09FABBB0AB8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA9F26FF-661C-4E4E-88D1-09FABBB0AB8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA9F26FF-661C-4E4E-88D1-09FABBB0AB8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9F26FF-661C-4E4E-88D1-09FABBB0AB8C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53C8DEC1-6345-42CB-B675-38A1CF005FD3}
+	EndGlobalSection
+EndGlobal
