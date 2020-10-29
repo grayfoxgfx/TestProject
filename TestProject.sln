@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProjectAPI", "TestProje
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToysGamesFront", "ToysGamesFront\ToysGamesFront.csproj", "{BA9F26FF-661C-4E4E-88D1-09FABBB0AB8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{960DE2D3-A399-46AE-A032-320A930649D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BA9F26FF-661C-4E4E-88D1-09FABBB0AB8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA9F26FF-661C-4E4E-88D1-09FABBB0AB8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA9F26FF-661C-4E4E-88D1-09FABBB0AB8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{960DE2D3-A399-46AE-A032-320A930649D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{960DE2D3-A399-46AE-A032-320A930649D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{960DE2D3-A399-46AE-A032-320A930649D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{960DE2D3-A399-46AE-A032-320A930649D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
