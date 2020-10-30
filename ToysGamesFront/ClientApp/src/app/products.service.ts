@@ -1,6 +1,7 @@
+import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, Subscription, of } from 'rxjs';
-import { map, catchError, switchMap, finalize } from 'rxjs/operators';
+import { map, catchError, switchMap, finalize, tap } from 'rxjs/operators';
 import { Product } from './models/models';
 import { ProductsHttpService } from './products-http.service';
 
@@ -74,6 +75,21 @@ export class ProductsService {
       }), switchMap(() => {
         return this.getAllProducts();
       }),
+      catchError((err) => {
+        console.error('err', err);
+        return of(undefined);
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  uploadProductImage(file: File):Observable<HttpEvent<Product>> {
+    this.isLoadingSubject.next(true);
+    return this.productsHttpService.uploadProductImage(file).pipe(
+      map(filename=> {        
+        this.isLoadingSubject.next(false);
+        return filename;
+      }),            
       catchError((err) => {
         console.error('err', err);
         return of(undefined);

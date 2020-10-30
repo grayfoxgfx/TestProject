@@ -149,7 +149,7 @@ namespace TestProjectAPI.Controllers
                 return BadRequest(new { ex.Message, ex.StackTrace });
             }
 
-            return Ok(new { fileName = filename});
+            return Ok(new Product(){ ImageUrl = filename});
         }
 
         private bool ProductExists(int id)
