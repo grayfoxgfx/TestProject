@@ -162,5 +162,8 @@
     "@schematics/angular:component": {
       "style": "sass"
     }
+  },
+  "cli": {
+    "analytics": "8926c77e-0684-4d71-abc4-ce8870ba7800"
   }
 }
