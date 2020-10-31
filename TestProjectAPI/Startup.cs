@@ -120,7 +120,7 @@ namespace TestProjectAPI
                 Description = "Buzz Light Year action figure",
                 Name = "Buzz Light Year",
                 Price = 212.50M,
-                ImageUrl = "/buzz.jpg"
+                ImageUrl = "buzz.jpg"
             };
 
             context.Products.Add(product1);

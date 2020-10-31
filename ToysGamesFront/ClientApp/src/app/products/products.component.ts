@@ -14,13 +14,14 @@ import { ProductsService } from '../products.service';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-
   productForm: FormGroup;
   hasError: boolean;
   isLoading$: Observable<boolean>;
+  products$: Observable<Product[]>;
   public progress: number = 0;
   public fileName: string = '';
-  public file: File;
+  public file: File;  
+  public products: Product[] = [];
 
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
@@ -32,9 +33,12 @@ export class ProductsComponent implements OnInit {
     private router: Router
   ) {
     this.isLoading$ = this.productService.isLoading$;
+    this.products$ = this.productService.allProducts$;
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {            
+    console.log(this.products);
+
     this.initForm();
   }
 
@@ -100,13 +104,14 @@ export class ProductsComponent implements OnInit {
     console.log(this.file);
   }
   public postFile(file: File) {
+    this.progress = 0;
     const postImageSubscr = this.productService
       .uploadProductImage(file)
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
           this.progress = Math.round(100 * event.loaded / event.total);
         else if (event.type === HttpEventType.Response) {
-          let img :Product = event.body;
+          let img: Product = event.body;
           debugger;
           let productModel = new Product();
           productModel.id = +this.f.id.value;
@@ -120,7 +125,10 @@ export class ProductsComponent implements OnInit {
 
           this.productService
             .createProduct(productModel).subscribe(createdProduct => {
-              console.log(createdProduct);             
+              console.log(createdProduct);
+              this.productService.getAllProducts().subscribe(success => {
+                console.log(success);
+              });
             }, error => {
               console.log(error);
             });
@@ -131,7 +139,6 @@ export class ProductsComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger;
     // TODO: Use EventEmitter with form value
     console.log(this.productForm.errors);
     console.warn(this.productForm.value);

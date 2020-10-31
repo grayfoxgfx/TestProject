@@ -1,3 +1,33 @@
+<div>
+    <ng-container *ngIf="isLoading$ | async">
+        <span class="spinner spinner-primary ml-5"></span>
+      </ng-container>
+    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="products$ | async">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Company</th>
+                <th>Age Restriction</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of products$ | async">
+                <td><img src="{{product.imageUrl}}" alt="Product Image"> </td> 
+                <td>{{product.id}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.description}}</td>
+                <td>{{product.company}}</td>
+                <td>{{product.ageRestriction}}</td>
+                <td>{{product.price}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
     <label>
         Id:
@@ -100,7 +130,7 @@
     <label>
         Profile Picture:
         <input formControlName="image" type="file" accept=".jpg" name="file"
-             (change)="selectFile($event.target.files)" />
+            (change)="selectFile($event.target.files)" />
         <div *ngIf="productForm.get('image').invalid && 
                     productForm.get('image').errors && 
                    (productForm.get('image').dirty || 
@@ -117,17 +147,12 @@
 
     <br />
     <div *ngIf="file" class="progress">
-        <div
-          class="progress-bar progress-bar-info progress-bar-striped"
-          role="progressbar"
-          attr.aria-valuenow="{{ progress }}"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          [ngStyle]="{ width: progress + '%' }"
-        >
-          {{ progress }}%
+        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+            attr.aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"
+            [ngStyle]="{ width: progress + '%' }">
+            {{ progress }}%
         </div>
-      </div>
+    </div>
     <button onclick="alert('text');">ckjecj</button>
     <button type="submit" [disabled]="!productForm.valid">Submit</button>
 </form>

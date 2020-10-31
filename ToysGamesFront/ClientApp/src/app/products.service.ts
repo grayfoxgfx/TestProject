@@ -2,6 +2,7 @@ import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, Subscription, of } from 'rxjs';
 import { map, catchError, switchMap, finalize, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Product } from './models/models';
 import { ProductsHttpService } from './products-http.service';
 
@@ -20,21 +21,28 @@ export class ProductsService {
     return this.allProductsSubject.value;
   }
   products: Product[] = [];
+
   constructor(private productsHttpService: ProductsHttpService) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this.isLoading$ = this.isLoadingSubject.asObservable();
-    this.allProductsSubject = new BehaviorSubject<Product[]>(undefined);
+    this.allProductsSubject = new BehaviorSubject<Product[]>([]);
     this.allProducts$ = this.allProductsSubject.asObservable();
-    const subscr = this.getAllProducts().subscribe();
+    const subscr = this.getAllProducts().subscribe(products => {
+      this.allProductsSubject = new BehaviorSubject<Product[]>(products);
+    });
     this.unsubscribe.push(subscr);
   }
 
   getAllProducts(): Observable<Product[]> {
     this.isLoadingSubject.next(true);
+    let API_PRODUCT_URL: string = environment.apiUrl + "/images/";
     return this.productsHttpService.getAllProducts().pipe(
-      map((products: Product[]) => {
-        this.allProductsSubject = new BehaviorSubject<Product[]>(products);
-        return products;
+      tap(products => {
+        products.forEach(product => {
+          product.imageUrl = API_PRODUCT_URL + product.imageUrl
+        })
+        console.log(products);
+        this.allProductsSubject.next(products);
       }),
       finalize(() => this.isLoadingSubject.next(false))
     );
@@ -57,7 +65,7 @@ export class ProductsService {
 
   createProduct(newProduct: Product): Observable<Product> {
     this.isLoadingSubject.next(true);
-    return this.productsHttpService.createProduct(newProduct).pipe(      
+    return this.productsHttpService.createProduct(newProduct).pipe(
       catchError((err) => {
         console.error('err', err);
         return of(undefined);
@@ -83,13 +91,13 @@ export class ProductsService {
     );
   }
 
-  uploadProductImage(file: File):Observable<HttpEvent<Product>> {
+  uploadProductImage(file: File): Observable<HttpEvent<Product>> {
     this.isLoadingSubject.next(true);
     return this.productsHttpService.uploadProductImage(file).pipe(
-      map(filename=> {        
+      map(filename => {
         this.isLoadingSubject.next(false);
         return filename;
-      }),            
+      }),
       catchError((err) => {
         console.error('err', err);
         return of(undefined);
