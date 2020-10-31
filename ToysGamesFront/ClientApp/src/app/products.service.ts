@@ -41,6 +41,7 @@ export class ProductsService {
         products.forEach(product => {
           product.imageUrl = API_PRODUCT_URL + product.imageUrl
         })
+        console.log("products");
         console.log(products);
         this.allProductsSubject.next(products);
       }),

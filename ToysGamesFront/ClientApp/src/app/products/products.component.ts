@@ -11,7 +11,7 @@ import { ProductsService } from '../products.service';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
   productForm: FormGroup;
@@ -30,7 +30,8 @@ export class ProductsComponent implements OnInit {
     private fb: FormBuilder,
     private productService: ProductsService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal, 
   ) {
     this.isLoading$ = this.productService.isLoading$;
     this.products$ = this.productService.allProducts$;
@@ -99,6 +100,17 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  public addProduct(){
+    let modalRef = this.modalService.open(AgregarEgresadoPopUpComponent);
+    modalRef.result.then((message: string) => {
+      this.messages.showSuccess(message, 'Informacion');
+      console.log(close);
+      this.CargaInformacionEgresados();
+    }, (dismiss) => {
+      this.messages.showInfo(dismiss, 'Informacion');
+    });
+  }
+  
   public selectFile(files: FileList) {
     this.file = files.item(0);
     console.log(this.file);
