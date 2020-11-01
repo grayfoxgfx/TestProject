@@ -1,12 +1,8 @@
-import { HttpEventType, HttpRequest } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { strict } from 'assert';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { first, last, map, switchMap, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { Observable, Subscription } from 'rxjs';
 import { AddProductComponent } from '../add-product/add-product.component';
 import { ConfirmationDialogService } from '../confirmation-dialog.service';
 import { EditProductComponent } from '../edit-product/edit-product.component';
@@ -33,10 +29,7 @@ export class ProductsComponent implements OnInit {
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
   constructor(
-    private fb: FormBuilder,
     private productService: ProductsService,
-    private route: ActivatedRoute,
-    private router: Router,
     private modalService: NgbModal,
     private messages: MessageService,
     private confirmationService: ConfirmationDialogService
@@ -57,7 +50,7 @@ export class ProductsComponent implements OnInit {
   public addProduct() {
     let modalRef = this.modalService.open(AddProductComponent);
     modalRef.result.then((message: string) => {
-      this.messages.showSuccess(message, 'Informacion');
+      this.messages.showSuccess(message, 'Information');
       const sus = this.productService.getAllProducts().subscribe(success => {
         console.log(success);
       });
@@ -69,13 +62,13 @@ export class ProductsComponent implements OnInit {
     let modalRef = this.modalService.open(EditProductComponent);
     modalRef.componentInstance.product = product;
     modalRef.result.then((message: string) => {
-      this.messages.showSuccess(message, 'Informacion');
+      this.messages.showSuccess(message, 'Information');
       this.getAllProducts();
     }).catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Advertencia'));    
   }
 
   public confirmDeleteProduct(product: Product) {
-    this.confirmationService.confirm('ADVERTENCIA', '¿Esta seguro que desea eliminar?')
+    this.confirmationService.confirm('Warning', '¿Are you sure to delete this item?')
       .then((confirmed) => {        
         if (confirmed) {
           this.deleteProduct(product);
@@ -94,7 +87,7 @@ export class ProductsComponent implements OnInit {
   }
   public deleteProduct(product: Product) {
     const sus = this.productService.deleteProductById(product.id).subscribe(deletedProduct => {
-      this.messages.showInfo('Producto ' + deletedProduct.id + ' eliminado con exito', 'Informacion');
+      this.messages.showInfo('Product ' + deletedProduct.id + ' deleted successfully', 'Information');
       this.getAllProducts();
     });
     this.unsubscribe.push(sus);

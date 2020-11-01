@@ -1,11 +1,8 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { HttpEventType } from '@angular/common/http';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from '../message.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../models/models';
 import { ProductsService } from '../products.service';
 
@@ -15,7 +12,6 @@ import { ProductsService } from '../products.service';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent implements OnInit {    
-  private modalRef: NgbModalRef;    
   // convenience getter for easy access to form fields
   get f() {
     return this.productForm.controls;
@@ -34,15 +30,9 @@ export class AddProductComponent implements OnInit {
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
   
   constructor(
-    private _http: HttpClient, 
     public activeModal: NgbActiveModal,    
-    private modalService: NgbModal,
     private fb: FormBuilder,
-    private productService: ProductsService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private messages:MessageService 
-) { 
+    private productService: ProductsService) { 
       this.isLoading$ = this.productService.isLoading$;
       this.products$ = this.productService.allProducts$;
   }
@@ -122,7 +112,7 @@ export class AddProductComponent implements OnInit {
           this.productService
             .createProduct(productModel).subscribe(createdProduct => {
               console.log(createdProduct);
-              this.activeModal.close("Producto creado " + createdProduct.id);                            
+              this.activeModal.close("Product created! " + createdProduct.id);                            
             }, error => {
               console.log(error);
             });

@@ -1,10 +1,8 @@
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpEventType } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
-import { MessageService } from '../message.service';
 import { Product } from '../models/models';
 import { ProductsService } from '../products.service';
 
@@ -16,7 +14,6 @@ import { ProductsService } from '../products.service';
 export class EditProductComponent implements OnInit {
 
   @Input() product: Product;
-  private modalRef: NgbModalRef;
   // convenience getter for easy access to form fields
   get f() {
     return this.editProductForm.controls;
@@ -36,15 +33,9 @@ export class EditProductComponent implements OnInit {
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
   constructor(
-    private _http: HttpClient,
     public activeModal: NgbActiveModal,
-    private modalService: NgbModal,
     private fb: FormBuilder,
-    private productService: ProductsService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private messages: MessageService
-  ) {
+    private productService: ProductsService  ) {
     this.isLoading$ = this.productService.isLoading$;
   }
 
@@ -140,7 +131,7 @@ export class EditProductComponent implements OnInit {
     const sus = this.productService
       .updateProduct(productModel.id, productModel).subscribe(editedProduct => {
         console.log(editedProduct);
-        this.activeModal.close("Producto editado correctamente " + productModel.id);
+        this.activeModal.close("Product edited! " + productModel.id);
       }, error => {
         console.log(error);
       });
