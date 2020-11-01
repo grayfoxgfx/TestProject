@@ -1,4 +1,5 @@
 export class Product {
+    apiUrl: string;
     id: number;
     name: string;
     description: string;

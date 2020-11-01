@@ -6,7 +6,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { strict } from 'assert';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { first, last, map, switchMap, tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { AddProductComponent } from '../add-product/add-product.component';
+import { EditProductComponent } from '../edit-product/edit-product.component';
 import { MessageService } from '../message.service';
 import { Product } from '../models/models';
 import { ProductsService } from '../products.service';
@@ -54,14 +56,34 @@ export class ProductsComponent implements OnInit {
     let modalRef = this.modalService.open(AddProductComponent);
     modalRef.result.then((message: string) => {
       this.messages.showSuccess(message, 'Informacion');
-      this.productService.getAllProducts().subscribe(success => {
+      const sus = this.productService.getAllProducts().subscribe(success => {
         console.log(success);
       });
+      this.unsubscribe.push(sus);
+    }, (dismiss) => {
+      this.messages.showWarning(dismiss, 'Informacion');
+    });    
+  }
+
+  public editProduct(product: Product) {
+    let modalRef = this.modalService.open(EditProductComponent);
+    modalRef.componentInstance.product = product;
+    modalRef.result.then((message: string) => {
+      this.messages.showSuccess(message, 'Informacion');
+      this.getAllProducts();
     }, (dismiss) => {
       this.messages.showWarning(dismiss, 'Informacion');
     });
   }
 
+  public getAllProducts() {    
+    const sus = this.productService.getAllProducts().subscribe(products => {
+      console.log("products");
+      console.log(products);
+      this.productService.allProductsSubject.next(products);      
+    });
+    this.unsubscribe.push(sus);
+  }
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
   }

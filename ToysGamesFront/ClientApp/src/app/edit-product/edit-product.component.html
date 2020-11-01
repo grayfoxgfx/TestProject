@@ -1,0 +1,123 @@
+<div class="modal-header">
+    <h4 class="modal-title">EDITAR PRODUCTO</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Descartado')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<ng-container *ngIf="isLoading$ | async">
+    <span class="spinner spinner-primary ml-5"></span>
+</ng-container>
+<!-- Scrollable modal -->
+<div class="modal-body">
+    <form [formGroup]="editProductForm" (ngSubmit)="onSubmit()">
+        <label>
+            Id:
+            <input type="text" formControlName="id">
+        </label>
+        <label>
+            Name:
+            <input type="text" formControlName="name">
+        </label>
+        <div *ngIf="editProductForm.get('id').invalid && 
+                editProductForm.get('id').errors && 
+               (editProductForm.get('id').dirty || 
+                editProductForm.get('id').touched)">
+            <small class="text-danger" *ngIf="editProductForm.get('name').hasError('required')">
+                This field is required.
+            </small>
+            <small class="text-danger" *ngIf="editProductForm.get('name').hasError('minlength')">
+                The minimum length for this field is {{editProductForm.get('name').errors.minlength.requiredLength}}
+                characters.
+            </small>
+            <small class="text-danger" *ngIf="editProductForm.get('name').hasError('maxlength')">
+                The maximum length for this field is {{editProductForm.get('name').errors.maxlength.requiredLength}}
+                characters.
+            </small>
+        </div>
+        <label>
+            Description:
+            <input type="text" formControlName="description">
+        </label>
+        <div *ngIf="editProductForm.get('description').invalid && 
+                editProductForm.get('description').errors && 
+               (editProductForm.get('description').dirty || 
+                editProductForm.get('description').touched)">
+            <small class="text-danger" *ngIf="editProductForm.get('description').hasError('minlength')">
+                The minimum length for this field is {{editProductForm.get('description').errors.minlength.requiredLength}}
+                characters.
+            </small>
+            <small class="text-danger" *ngIf="editProductForm.get('description').hasError('maxlength')">
+                The maximum length for this field is {{editProductForm.get('description').errors.maxlength.requiredLength}}
+                characters.
+            </small>
+        </div>
+        <label>
+            Age Restriction:
+            <input type="text" formControlName="ageRestriction">
+        </label>
+        <div *ngIf="editProductForm.get('ageRestriction').invalid && 
+                editProductForm.get('ageRestriction').errors && 
+               (editProductForm.get('ageRestriction').dirty || 
+                editProductForm.get('ageRestriction').touched)">
+            <small class="text-danger" *ngIf="editProductForm.get('ageRestriction').hasError('min')">
+                The minimum length for this field is {{editProductForm.get('ageRestriction').errors.min.min}}.
+            </small>
+            <small class="text-danger" *ngIf="editProductForm.get('ageRestriction').hasError('max')">
+                The maximum length for this field is {{editProductForm.get('ageRestriction').errors.max.max}}.
+            </small>
+        </div>
+        <label>
+            Company:
+            <input type="text" formControlName="company">
+        </label>
+        <div *ngIf="editProductForm.get('company').invalid && 
+                editProductForm.get('company').errors && 
+               (editProductForm.get('company').dirty || 
+                editProductForm.get('company').touched)">
+            <small class="text-danger" *ngIf="editProductForm.get('company').hasError('required')">
+                This field is required.
+            </small>
+            <small class="text-danger" *ngIf="editProductForm.get('company').hasError('minlength')">
+                The minimum length for this field is {{editProductForm.get('company').errors.minlength.requiredLength}}
+                characters.
+            </small>
+            <small class="text-danger" *ngIf="editProductForm.get('company').hasError('maxlength')">
+                The maximum length for this field is {{editProductForm.get('company').errors.maxlength.requiredLength}}
+                characters.
+            </small>
+        </div>
+        <label>
+            Price:
+            <input type="text" formControlName="price">
+        </label>
+        <div *ngIf="editProductForm.get('price').invalid && 
+                editProductForm.get('price').errors && 
+               (editProductForm.get('price').dirty || 
+                editProductForm.get('price').touched)">
+            <small class="text-danger" *ngIf="editProductForm.get('price').hasError('min')">
+                The minimum length for this field is {{editProductForm.get('price').errors.min.min}}.
+            </small>
+            <small class="text-danger" *ngIf="editProductForm.get('price').hasError('max')">
+                The maximum length for this field is {{editProductForm.get('price').errors.max.max}}.
+            </small>
+        </div>
+        <label>
+            Profile Picture:            
+            <img class="image" src="{{product.apiUrl + product.imageUrl}}" alt="Product Image">
+            <input formControlName="image" type="file" accept=".jpg" name="file"
+                (change)="selectFile($event.target.files)" />
+        </label>
+        <br />
+        <div *ngIf="file" class="progress">
+            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                attr.aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"
+                [ngStyle]="{ width: progress + '%' }">
+                {{ progress }}%
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" [disabled]="!editProductForm.valid">Submit</button>
+        </div>
+    </form>
+</div>

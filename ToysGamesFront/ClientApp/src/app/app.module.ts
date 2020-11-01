@@ -12,10 +12,11 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProductsComponent } from './products/products.component';
-import { ProductEditComponent } from './product-edit/product-edit.component';
 import { AddProductComponent } from './add-product/add-product.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EditProductComponent } from './edit-product/edit-product.component';
+import { DeleteProductComponent } from './delete-product/delete-product.component';
 
 @NgModule({
   declarations: [
@@ -24,9 +25,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    ProductsComponent,
-    ProductEditComponent,
-    AddProductComponent
+    ProductsComponent,   
+    AddProductComponent,
+    EditProductComponent,
+    DeleteProductComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -47,7 +49,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-    AddProductComponent    
+    AddProductComponent,
+    EditProductComponent,
+    DeleteProductComponent    
   ],
 })
 export class AppModule { }

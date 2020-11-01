@@ -12,26 +12,13 @@
 <div class="modal-body">
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
         <label>
-            Id:
-            <input type="text" formControlName="id">
-        </label>
-        <div *ngIf="productForm.get('id').invalid && 
-                productForm.get('id').errors && 
-               (productForm.get('id').dirty || 
-                productForm.get('id').touched)">
-            <small class="text-danger" *ngIf="productForm.get('id').hasError('required')">
-                This field is required.
-            </small>
-        </div>
-
-        <label>
             Name:
             <input type="text" formControlName="name">
         </label>
-        <div *ngIf="productForm.get('id').invalid && 
-                productForm.get('id').errors && 
-               (productForm.get('id').dirty || 
-                productForm.get('id').touched)">
+        <div *ngIf="productForm.get('name').invalid && 
+                productForm.get('name').errors && 
+               (productForm.get('name').dirty || 
+                productForm.get('name').touched)">
             <small class="text-danger" *ngIf="productForm.get('name').hasError('required')">
                 This field is required.
             </small>

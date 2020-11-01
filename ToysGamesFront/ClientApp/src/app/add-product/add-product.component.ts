@@ -12,7 +12,7 @@ import { ProductsService } from '../products.service';
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.sass']
+  styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent implements OnInit {    
   private modalRef: NgbModalRef;    
@@ -52,13 +52,7 @@ export class AddProductComponent implements OnInit {
   }
 
   initForm() {
-    this.productForm = this.fb.group({
-      id: [
-        '',
-        Validators.compose([
-          Validators.required,
-        ]),
-      ],
+    this.productForm = this.fb.group({      
       name: [
         '',
         Validators.compose([
@@ -115,10 +109,8 @@ export class AddProductComponent implements OnInit {
         if (event.type === HttpEventType.UploadProgress)
           this.progress = Math.round(100 * event.loaded / event.total);
         else if (event.type === HttpEventType.Response) {
-          let img: Product = event.body;
-          debugger;
-          let productModel = new Product();
-          productModel.id = +this.f.id.value;
+          let img: Product = event.body;          
+          let productModel = new Product();          
           productModel.name = this.f.name.value;
           productModel.company = this.f.company.value;
           productModel.description = this.f.description.value;
@@ -130,7 +122,7 @@ export class AddProductComponent implements OnInit {
           this.productService
             .createProduct(productModel).subscribe(createdProduct => {
               console.log(createdProduct);
-              this.activeModal.close("Egresado Agregado Correctamente " + createdProduct.id);                            
+              this.activeModal.close("Producto creado " + createdProduct.id);                            
             }, error => {
               console.log(error);
             });
@@ -138,6 +130,7 @@ export class AddProductComponent implements OnInit {
       }, error => {
         console.log(error);
       });
+      this.unsubscribe.push(postImageSubscr);
   }
 
   onSubmit() {

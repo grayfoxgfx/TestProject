@@ -1,6 +1,6 @@
 import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, Subscription, of } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription, of, EMPTY } from 'rxjs';
 import { map, catchError, switchMap, finalize, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Product } from './models/models';
@@ -28,21 +28,15 @@ export class ProductsService {
     this.allProductsSubject = new BehaviorSubject<Product[]>([]);
     this.allProducts$ = this.allProductsSubject.asObservable();
     const subscr = this.getAllProducts().subscribe(products => {
-      this.allProductsSubject = new BehaviorSubject<Product[]>(products);
+      this.allProductsSubject.next(products);
     });
     this.unsubscribe.push(subscr);
   }
 
   getAllProducts(): Observable<Product[]> {
-    this.isLoadingSubject.next(true);
-    let API_PRODUCT_URL: string = environment.apiUrl + "/images/";
+    this.isLoadingSubject.next(true);    
     return this.productsHttpService.getAllProducts().pipe(
-      tap(products => {
-        products.forEach(product => {
-          product.imageUrl = API_PRODUCT_URL + product.imageUrl
-        })
-        console.log("products");
-        console.log(products);
+      tap(products => {        
         this.allProductsSubject.next(products);
       }),
       finalize(() => this.isLoadingSubject.next(false))
@@ -94,6 +88,7 @@ export class ProductsService {
 
   uploadProductImage(file: File): Observable<HttpEvent<Product>> {
     this.isLoadingSubject.next(true);
+
     return this.productsHttpService.uploadProductImage(file).pipe(
       map(filename => {
         this.isLoadingSubject.next(false);
