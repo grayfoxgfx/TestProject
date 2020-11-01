@@ -154,9 +154,7 @@ export class EditProductComponent implements OnInit {
     productModel.company = this.f.company.value;
     productModel.description = this.f.description.value;
     productModel.ageRestriction = +this.f.ageRestriction.value;
-    productModel.price = +this.f.price.value;
-
-    debugger;
+    productModel.price = +this.f.price.value;    
     productModel.imageUrl = (this.img && this.img.imageUrl.trim().length> 0) ? this.img.imageUrl : this.product.imageUrl;
     return productModel;
   }
