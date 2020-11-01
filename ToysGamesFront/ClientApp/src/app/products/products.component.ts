@@ -2,9 +2,12 @@ import { HttpEventType, HttpRequest } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { strict } from 'assert';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { first, last, map, switchMap, tap } from 'rxjs/operators';
+import { AddProductComponent } from '../add-product/add-product.component';
+import { MessageService } from '../message.service';
 import { Product } from '../models/models';
 import { ProductsService } from '../products.service';
 
@@ -20,7 +23,7 @@ export class ProductsComponent implements OnInit {
   products$: Observable<Product[]>;
   public progress: number = 0;
   public fileName: string = '';
-  public file: File;  
+  public file: File;
   public products: Product[] = [];
 
   // private fields
@@ -31,16 +34,15 @@ export class ProductsComponent implements OnInit {
     private productService: ProductsService,
     private route: ActivatedRoute,
     private router: Router,
-    private modalService: NgbModal, 
+    private modalService: NgbModal,
+    private messages: MessageService
   ) {
     this.isLoading$ = this.productService.isLoading$;
     this.products$ = this.productService.allProducts$;
   }
 
-  ngOnInit(): void {            
+  ngOnInit(): void {
     console.log(this.products);
-
-    this.initForm();
   }
 
   // convenience getter for easy access to form fields
@@ -48,116 +50,16 @@ export class ProductsComponent implements OnInit {
     return this.productForm.controls;
   }
 
-  initForm() {
-    this.productForm = this.fb.group({
-      id: [
-        '',
-        Validators.compose([
-          Validators.required,
-        ]),
-      ],
-      name: [
-        '',
-        Validators.compose([
-          Validators.required,
-          Validators.maxLength(50),
-        ]),
-      ],
-      description: [
-        '',
-        Validators.compose([
-          Validators.maxLength(100),
-        ]),
-      ],
-      ageRestriction: [
-        0,
-        Validators.compose([
-          Validators.min(0),
-          Validators.max(100),
-        ]),
-      ],
-      price: [
-        0,
-        Validators.compose([
-          Validators.required,
-          Validators.min(1),
-          Validators.max(1000),
-        ]),
-      ],
-      company: [
-        '',
-        Validators.compose([
-          Validators.required,
-          Validators.maxLength(50),
-        ]),
-      ],
-      image: [
-        '',
-        Validators.compose([
-          Validators.required,
-        ]),
-      ],
-    });
-  }
-
-  public addProduct(){
-    let modalRef = this.modalService.open(AgregarEgresadoPopUpComponent);
+  public addProduct() {
+    let modalRef = this.modalService.open(AddProductComponent);
     modalRef.result.then((message: string) => {
       this.messages.showSuccess(message, 'Informacion');
-      console.log(close);
-      this.CargaInformacionEgresados();
-    }, (dismiss) => {
-      this.messages.showInfo(dismiss, 'Informacion');
-    });
-  }
-  
-  public selectFile(files: FileList) {
-    this.file = files.item(0);
-    console.log(this.file);
-  }
-  public postFile(file: File) {
-    this.progress = 0;
-    const postImageSubscr = this.productService
-      .uploadProductImage(file)
-      .subscribe(event => {
-        if (event.type === HttpEventType.UploadProgress)
-          this.progress = Math.round(100 * event.loaded / event.total);
-        else if (event.type === HttpEventType.Response) {
-          let img: Product = event.body;
-          debugger;
-          let productModel = new Product();
-          productModel.id = +this.f.id.value;
-          productModel.name = this.f.name.value;
-          productModel.company = this.f.company.value;
-          productModel.description = this.f.description.value;
-          productModel.ageRestriction = +this.f.ageRestriction.value;
-          productModel.price = +this.f.price.value;
-
-          productModel.imageUrl = img.imageUrl;
-
-          this.productService
-            .createProduct(productModel).subscribe(createdProduct => {
-              console.log(createdProduct);
-              this.productService.getAllProducts().subscribe(success => {
-                console.log(success);
-              });
-            }, error => {
-              console.log(error);
-            });
-        }
-      }, error => {
-        console.log(error);
+      this.productService.getAllProducts().subscribe(success => {
+        console.log(success);
       });
-  }
-
-  onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.log(this.productForm.errors);
-    console.warn(this.productForm.value);
-    //this.submit();
-    this.postFile(this.file);
-    const getAll = this.productService.getAllProducts().subscribe();
-    this.unsubscribe.push(getAll);
+    }, (dismiss) => {
+      this.messages.showWarning(dismiss, 'Informacion');
+    });
   }
 
   ngOnDestroy() {

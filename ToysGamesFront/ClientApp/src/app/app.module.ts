@@ -13,6 +13,9 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProductsComponent } from './products/products.component';
 import { ProductEditComponent } from './product-edit/product-edit.component';
+import { AddProductComponent } from './add-product/add-product.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,19 +25,29 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
     CounterComponent,
     FetchDataComponent,
     ProductsComponent,
-    ProductEditComponent
+    ProductEditComponent,
+    AddProductComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    NgbModule,
+    ToastrModule.forRoot({
+      progressBar: true
+    }),
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'products', component: ProductsComponent },      
-    ])
+    ]),
+    NgbModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    AddProductComponent    
+  ],
 })
 export class AppModule { }

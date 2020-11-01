@@ -1,11 +1,13 @@
 <div>
     <ng-container *ngIf="isLoading$ | async">
         <span class="spinner spinner-primary ml-5"></span>
-      </ng-container>
+    </ng-container>
 
-      <div>
-          <button onclick="addProduct()">Add Product</button>
-      </div>
+    <div>
+        <button (click)="addProduct()">
+            Add Product
+        </button>
+    </div>
     <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="products$ | async">
         <thead>
             <tr>
@@ -21,7 +23,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let product of products$ | async">
-                <td><img class="image" src="{{product.imageUrl}}" alt="Product Image"> </td> 
+                <td><img class="image" src="{{product.imageUrl}}" alt="Product Image"> </td>
                 <td>{{product.id}}</td>
                 <td>{{product.name}}</td>
                 <td>{{product.description}}</td>
@@ -32,7 +34,7 @@
                     <button onclick="alert('edit');">Editar</button>
                     <button onclick="alert('Eliminar');">Eliminar</button>
                 </td>
-                
+
             </tr>
         </tbody>
     </table>
