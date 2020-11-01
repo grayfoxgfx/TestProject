@@ -10,6 +10,7 @@ using DataAccess.Models;
 using DataAccess.Models.Contexts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using Services;
 
 namespace TestProjectAPI.Controllers
 {
@@ -17,13 +18,13 @@ namespace TestProjectAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ApiContext _context;
+        private readonly IProductService _productService;
         private readonly ILogger _logger;
         private readonly IWebHostEnvironment _host;
 
-        public ProductsController(ApiContext context, ILogger<ProductsController> logger, IWebHostEnvironment host)
+        public ProductsController(IProductService productService, ILogger<ProductsController> logger, IWebHostEnvironment host)
         {
-            _context = context;
+            _productService = productService;
             _logger = logger;
             _host = host;
         }
@@ -33,7 +34,7 @@ namespace TestProjectAPI.Controllers
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             _logger.LogInformation("Getting all products");
-            return await _context.Products.ToListAsync();
+            return await _productService.GetAllProductsAsync();
         }
 
         // GET: api/Products/5
@@ -41,7 +42,7 @@ namespace TestProjectAPI.Controllers
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
             _logger.LogInformation("Getting product id: {0}", id);
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productService.GetProductByIdAsync(id);
 
             if (product == null)
             {
@@ -64,16 +65,14 @@ namespace TestProjectAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(product).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Product id: {0} updated", id);
+                product = await _productService.EditProductAsync(product);
+                _logger.LogInformation("Product id: {0} updated", product.Id);
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!ProductExists(id))
+                if (!ProductExists(id).Result)
                 {
                     _logger.LogInformation("Product id: {0} not found", id);
                     return NotFound();
@@ -94,8 +93,7 @@ namespace TestProjectAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            await _productService.AddProductAsync(product);
             _logger.LogInformation("Product id: {0} created", product.Id);
             return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
@@ -104,16 +102,16 @@ namespace TestProjectAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Product>> DeleteProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productService.GetProductByIdAsync(id);
             if (product == null)
             {
                 _logger.LogInformation("Product id: {0} not found", id);
                 return NotFound();
             }
 
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-            _logger.LogInformation("Product id: {0} deleted", product.Id);
+            await _productService.DeleteProductAsync(product);
+
+            _logger.LogInformation("Product id: {0} deleted", id);
 
             return product;
         }
@@ -129,7 +127,6 @@ namespace TestProjectAPI.Controllers
             var filename = Guid.NewGuid() + ".jpg";
 
             List<IFormFile> files = new List<IFormFile> { file };
-            long size = files.Sum(f => f.Length);
 
             // full path to file in temp location
             try
@@ -152,9 +149,10 @@ namespace TestProjectAPI.Controllers
             return Ok(new Product(){ ImageUrl = filename});
         }
 
-        private bool ProductExists(int id)
+        private async Task<bool> ProductExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            var product = await _productService.GetProductByIdAsync(id);
+            return product.Id > 0;
         }
     }
 }
