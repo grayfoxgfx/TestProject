@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { first, last, map, switchMap, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AddProductComponent } from '../add-product/add-product.component';
+import { ConfirmationDialogService } from '../confirmation-dialog.service';
 import { EditProductComponent } from '../edit-product/edit-product.component';
 import { MessageService } from '../message.service';
 import { Product } from '../models/models';
@@ -37,7 +38,8 @@ export class ProductsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
-    private messages: MessageService
+    private messages: MessageService,
+    private confirmationService: ConfirmationDialogService
   ) {
     this.isLoading$ = this.productService.isLoading$;
     this.products$ = this.productService.allProducts$;
@@ -60,9 +62,7 @@ export class ProductsComponent implements OnInit {
         console.log(success);
       });
       this.unsubscribe.push(sus);
-    }, (dismiss) => {
-      this.messages.showWarning(dismiss, 'Informacion');
-    });    
+    }) .catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Advertencia'));
   }
 
   public editProduct(product: Product) {
@@ -71,16 +71,31 @@ export class ProductsComponent implements OnInit {
     modalRef.result.then((message: string) => {
       this.messages.showSuccess(message, 'Informacion');
       this.getAllProducts();
-    }, (dismiss) => {
-      this.messages.showWarning(dismiss, 'Informacion');
-    });
+    }).catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Advertencia'));    
   }
 
-  public getAllProducts() {    
+  public confirmDeleteProduct(product: Product) {
+    this.confirmationService.confirm('ADVERTENCIA', '¿Esta seguro que desea eliminar?')
+      .then((confirmed) => {        
+        if (confirmed) {
+          this.deleteProduct(product);
+        }
+      })
+      .catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Advertencia'));
+  }
+
+  public getAllProducts() {
     const sus = this.productService.getAllProducts().subscribe(products => {
       console.log("products");
       console.log(products);
-      this.productService.allProductsSubject.next(products);      
+      this.productService.allProductsSubject.next(products);
+    });
+    this.unsubscribe.push(sus);
+  }
+  public deleteProduct(product: Product) {
+    const sus = this.productService.deleteProductById(product.id).subscribe(deletedProduct => {
+      this.messages.showInfo('Producto ' + deletedProduct.id + ' eliminado con exito', 'Informacion');
+      this.getAllProducts();
     });
     this.unsubscribe.push(sus);
   }

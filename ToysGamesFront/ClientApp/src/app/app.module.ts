@@ -9,26 +9,22 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ProductsComponent } from './products/products.component';
 import { AddProductComponent } from './add-product/add-product.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditProductComponent } from './edit-product/edit-product.component';
-import { DeleteProductComponent } from './delete-product/delete-product.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
+    HomeComponent,    
     ProductsComponent,   
     AddProductComponent,
-    EditProductComponent,
-    DeleteProductComponent
+    EditProductComponent,    
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -50,8 +46,7 @@ import { DeleteProductComponent } from './delete-product/delete-product.componen
   bootstrap: [AppComponent],
   entryComponents: [
     AddProductComponent,
-    EditProductComponent,
-    DeleteProductComponent    
+    EditProductComponent        
   ],
 })
 export class AppModule { }

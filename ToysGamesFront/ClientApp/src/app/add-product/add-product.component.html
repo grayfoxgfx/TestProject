@@ -49,8 +49,8 @@
             </small>
         </div>
         <label>
-            Age Restriction:
-            <input type="text" formControlName="ageRestriction">
+            Maximum Age:
+            <input type="number" formControlName="ageRestriction">
         </label>
         <div *ngIf="productForm.get('ageRestriction').invalid && 
                 productForm.get('ageRestriction').errors && 

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeleteProductComponent } from './delete-product.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog.component';
 
-describe('DeleteProductComponent', () => {
-  let component: DeleteProductComponent;
-  let fixture: ComponentFixture<DeleteProductComponent>;
+describe('ConfirmationDialogComponent', () => {
+  let component: ConfirmationDialogComponent;
+  let fixture: ComponentFixture<ConfirmationDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteProductComponent ]
+      declarations: [ ConfirmationDialogComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeleteProductComponent);
+    fixture = TestBed.createComponent(ConfirmationDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

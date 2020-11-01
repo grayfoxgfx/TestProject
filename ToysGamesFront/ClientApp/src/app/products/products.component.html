@@ -4,8 +4,8 @@
     </ng-container>
 
     <div>
-        <button (click)="addProduct()">
-            Add Product
+        <button  class="btn btn-link" (click)="addProduct()">
+            Add New +
         </button>
     </div>
     <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="products$ | async">
@@ -31,8 +31,8 @@
                 <td>{{product.ageRestriction}}</td>
                 <td>{{product.price | currency}}</td>
                 <td>
-                    <button  (click)="editProduct(product)">Editar</button>
-                    <button  (click)="deleteProduct(product)">Eliminar</button>
+                    <button class="btn btn-link" (click)="editProduct(product)">Editar</button>
+                    <button class="btn btn-link" (click)="confirmDeleteProduct(product)">Eliminar</button>
                 </td>
             </tr>
         </tbody>
