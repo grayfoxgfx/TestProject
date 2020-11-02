@@ -79,7 +79,7 @@ namespace TestProjectAPI.Controllers
                 }
                 else
                 {
-                    _logger.LogCritical(ex,"Update product failed",id,product);
+                    _logger.LogCritical(ex, "Update product failed", id, product);
                     throw;
                 }
             }
@@ -123,31 +123,36 @@ namespace TestProjectAPI.Controllers
         [DisableRequestSizeLimit]
         public async Task<IActionResult> SubirArchivo()
         {
-            var file = Request.Form.Files[0];
-            var filename = Guid.NewGuid() + ".jpg";
-
-            List<IFormFile> files = new List<IFormFile> { file };
-
-            // full path to file in temp location
-            try
+            if (Request.Form.Files.Any())
             {
-                foreach (var formFile in files)
+                var file = Request.Form.Files[0];
+                if (file == null)
+                    return BadRequest("No file found");
+                var filename = Guid.NewGuid() + ".jpg";
+
+                // full path to file in temp location
+                try
                 {
                     var filePath = Path.Combine(_host.WebRootPath, "Images", filename);
+                    Console.WriteLine(Directory.CreateDirectory(Path.GetDirectoryName(filePath)));
                     Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-                    if (formFile.Length > 0)
+                    if (file.Length > 0)
                     {
                         await using var stream = new FileStream(filePath, FileMode.Create);
-                        await formFile.CopyToAsync(stream);
+                        await file.CopyToAsync(stream);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { ex.Message, ex.StackTrace });
-            }
+                catch (Exception ex)
+                {
+                    return BadRequest(new { ex.Message, ex.StackTrace });
+                }
 
-            return Ok(new Product(){ ImageUrl = filename});
+                return Ok(new Product() { ImageUrl = filename });
+            }
+            else
+            {
+                return BadRequest("No file found, Request doesn't contain a file");
+            }
         }
 
         private async Task<bool> ProductExists(int id)
