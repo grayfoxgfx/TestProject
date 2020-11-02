@@ -87,7 +87,7 @@ export class ProductsComponent implements OnInit {
   }
   public deleteProduct(product: Product) {
     const sus = this.productService.deleteProductById(product.id).subscribe(deletedProduct => {
-      this.messages.showInfo('Product ' + deletedProduct.id + ' deleted successfully', 'Information');
+      this.messages.showInfo('Product ' + product.id + ' deleted successfully', 'Information');
       this.getAllProducts();
     });
     this.unsubscribe.push(sus);
