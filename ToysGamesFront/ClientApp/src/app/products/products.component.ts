@@ -55,7 +55,7 @@ export class ProductsComponent implements OnInit {
         console.log(success);
       });
       this.unsubscribe.push(sus);
-    }) .catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Advertencia'));
+    }) .catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Warning'));
   }
 
   public editProduct(product: Product) {
@@ -64,7 +64,7 @@ export class ProductsComponent implements OnInit {
     modalRef.result.then((message: string) => {
       this.messages.showSuccess(message, 'Information');
       this.getAllProducts();
-    }).catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Advertencia'));    
+    }).catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Warning'));    
   }
 
   public confirmDeleteProduct(product: Product) {
@@ -74,7 +74,7 @@ export class ProductsComponent implements OnInit {
           this.deleteProduct(product);
         }
       })
-      .catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Advertencia'));
+      .catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Warning'));
   }
 
   public getAllProducts() {
