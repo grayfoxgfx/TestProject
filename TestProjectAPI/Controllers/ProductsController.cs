@@ -134,6 +134,7 @@ namespace TestProjectAPI.Controllers
                 foreach (var formFile in files)
                 {
                     var filePath = Path.Combine(_host.WebRootPath, "Images", filename);
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
                     if (formFile.Length > 0)
                     {
                         await using var stream = new FileStream(filePath, FileMode.Create);
