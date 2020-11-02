@@ -133,6 +133,7 @@ namespace TestProjectAPI.Controllers
                 // full path to file in temp location
                 try
                 {
+                    _logger.LogInformation("Uploading product image");
                     var filePath = Path.Combine(_host.WebRootPath, "Images", filename);
                     Console.WriteLine(Directory.CreateDirectory(Path.GetDirectoryName(filePath)));
                     Directory.CreateDirectory(Path.GetDirectoryName(filePath));
