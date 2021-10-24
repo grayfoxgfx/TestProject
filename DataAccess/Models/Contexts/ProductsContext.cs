@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Models.Contexts
 {
-    public class ApiContext : DbContext
+    public class ProductsContext : DbContext
     {
-        public ApiContext(DbContextOptions<ApiContext> options)
+        public ProductsContext(DbContextOptions<ProductsContext> options)
             : base(options)
         {
         }

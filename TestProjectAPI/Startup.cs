@@ -32,7 +32,7 @@ namespace TestProjectAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase("ToysGames"));
+            services.AddDbContext<ProductsContext>(opt => opt.UseInMemoryDatabase("ToysGames"));
             services.AddControllers();
             services.Configure<FormOptions>(x =>
             {
@@ -87,7 +87,7 @@ namespace TestProjectAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-            var context = serviceProvider.GetService<ApiContext>();
+            var context = serviceProvider.GetService<ProductsContext>();
             AddTestData(context);
 
             app.UseHttpsRedirection();
@@ -116,7 +116,7 @@ namespace TestProjectAPI
             });
         }
 
-        private static void AddTestData(ApiContext context)
+        private static void AddTestData(ProductsContext context)
         {
             var product1 = new Product()
             {

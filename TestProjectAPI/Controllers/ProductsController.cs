@@ -42,7 +42,11 @@ namespace TestProjectAPI.Controllers
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
             _logger.LogInformation("Getting product id: {0}", id);
-            var product = await _productService.GetProductByIdAsync(id);
+            var p = new Product
+            {
+                Id = id
+            };
+            var product = await _productService.GetProductByIdAsync(p);
 
             if (product == null)
             {
@@ -102,7 +106,11 @@ namespace TestProjectAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Product>> DeleteProduct(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
+            var p = new Product
+            {
+                Id = id
+            };
+            var product = await _productService.GetProductByIdAsync(p);
             if (product == null)
             {
                 _logger.LogInformation("Product id: {0} not found", id);
@@ -158,7 +166,11 @@ namespace TestProjectAPI.Controllers
 
         private async Task<bool> ProductExists(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
+            var p = new Product
+            {
+                Id = id
+            };
+            var product = await _productService.GetProductByIdAsync(p);
             return product.Id > 0;
         }
     }

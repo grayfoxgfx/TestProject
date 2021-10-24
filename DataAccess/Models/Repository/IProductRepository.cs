@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 namespace DataAccess.Models.Repository
 {
     public interface IProductRepository : IRepository<Product>
-    {
-        Task<Product> GetProductByIdAsync(int id);
+    {       
     }
 }

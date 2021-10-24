@@ -9,13 +9,8 @@ namespace DataAccess.Models.Repository
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {
-        public ProductRepository(ApiContext context) : base(context)
+        public ProductRepository(ProductsContext context) : base(context)
         {
-        }
-
-        public Task<Product> GetProductByIdAsync(int id)
-        {
-            return GetAll().FirstOrDefaultAsync(x => x.Id == id);
-        }
+        }        
     }
 }

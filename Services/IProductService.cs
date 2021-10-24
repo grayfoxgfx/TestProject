@@ -8,7 +8,7 @@ namespace Services
 {
     public interface IProductService
     {
-        Task<Product> GetProductByIdAsync(int id);
+        Task<Product> GetProductByIdAsync(Product product);
         Task<List<Product>> GetAllProductsAsync();
         Task<Product> AddProductAsync(Product product);
         Task<Product> EditProductAsync(Product product);

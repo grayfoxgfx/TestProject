@@ -9,9 +9,9 @@ namespace DataAccess.Models.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
-        protected readonly ApiContext RepositoryContext;
+        protected readonly ProductsContext RepositoryContext;
 
-        public Repository(ApiContext repositoryContext)
+        public Repository(ProductsContext repositoryContext)
         {
             this.RepositoryContext = repositoryContext;
         }
@@ -86,6 +86,6 @@ namespace DataAccess.Models.Repository
             {
                 throw new Exception($"{nameof(entity)} could not be deleted: {ex.Message}");
             }
-        }
+        }      
     }
 }

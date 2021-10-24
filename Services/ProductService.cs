@@ -17,9 +17,9 @@ namespace Services
             _productRepository = productRepository;
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
+        public async Task<Product> GetProductByIdAsync(Product product)
         {
-            return await _productRepository.GetProductByIdAsync(id);
+            return await _productRepository.GetAll().FirstOrDefaultAsync(x=> x.Id == product.Id);
         }
 
         public async Task<List<Product>> GetAllProductsAsync()
