@@ -37,9 +37,9 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     }),
     ReactiveFormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'products', component: ProductsComponent },      
-    ]),
+    { path: '', component: HomeComponent, pathMatch: 'full' },
+    { path: 'products', component: ProductsComponent },
+], { relativeLinkResolution: 'legacy' }),
     NgbModule
   ],
   providers: [],
