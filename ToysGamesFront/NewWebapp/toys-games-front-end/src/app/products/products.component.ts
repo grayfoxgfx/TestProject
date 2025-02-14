@@ -8,8 +8,8 @@ import { EditProductComponent } from '../edit-product/edit-product.component';
 import { MessageService } from '../services/message.service';
 import { Product } from '../models/models';
 import { ProductsService } from '../services/products.service';
-import { CommonModule, CurrencyPipe } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-products',
@@ -19,7 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       FormsModule,
       NgbModule,
       CommonModule,
-      BrowserAnimationsModule,
+      //BrowserAnimationsModule,
       ReactiveFormsModule,
     ],
 })
