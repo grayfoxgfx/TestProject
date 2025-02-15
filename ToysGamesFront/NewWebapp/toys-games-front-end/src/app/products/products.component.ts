@@ -9,7 +9,6 @@ import { MessageService } from '../services/message.service';
 import { Product } from '../models/models';
 import { ProductsService } from '../services/products.service';
 import { CommonModule } from '@angular/common';
-//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-products',
@@ -19,7 +18,6 @@ import { CommonModule } from '@angular/common';
       FormsModule,
       NgbModule,
       CommonModule,
-      //BrowserAnimationsModule,
       ReactiveFormsModule,
     ],
 })
@@ -47,6 +45,7 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllProducts();
     console.log(this.products);
   }
 

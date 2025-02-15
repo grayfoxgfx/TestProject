@@ -11,7 +11,6 @@ import {
 } from '@angular/forms';
 import { Product } from '../models/models';
 import { ProductsService } from '../services/products.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -22,7 +21,6 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     NgbModule,
     CommonModule,
-    BrowserAnimationsModule,
     ReactiveFormsModule,
   ],
 })
