@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Product } from '../models/models';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProductsService } from '../services/products.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-product',
@@ -14,7 +15,7 @@ import { ProductsService } from '../services/products.service';
    imports: [
       FormsModule,
       NgbModule,
-      BrowserAnimationsModule,
+      CommonModule,
       ReactiveFormsModule,
     ],
 })

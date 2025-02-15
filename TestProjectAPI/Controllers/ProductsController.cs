@@ -1,16 +1,20 @@
 ﻿using DataAccess.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Services;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace TestProjectAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductsController(IProductService _productService, ILogger<ProductsController> _logger) : ControllerBase
+    public class ProductsController(IProductService _productService, ILogger<ProductsController> _logger, IWebHostEnvironment _host) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
@@ -86,6 +90,46 @@ namespace TestProjectAPI.Controllers
             await _productService.DeleteProductAsync(product);
             _logger.LogInformation("Product id: {id} deleted", id);
             return product;
+        }
+
+        // POST: api/Products/Image
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost("image")]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> SubirArchivo()
+        {
+            if (Request.Form.Files.Any())
+            {
+                var file = Request.Form.Files[0];
+                if (file == null)
+                    return BadRequest("No file found");
+                var filename = Guid.NewGuid() + ".jpg";
+
+                // full path to file in temp location
+                try
+                {
+                    _logger.LogInformation("Uploading product image");
+                    var filePath = Path.Combine(_host.WebRootPath, "Images", filename);
+                    Console.WriteLine(Directory.CreateDirectory(Path.GetDirectoryName(filePath)));
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                    if (file.Length > 0)
+                    {
+                        await using var stream = new FileStream(filePath, FileMode.Create);
+                        await file.CopyToAsync(stream);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new { ex.Message, ex.StackTrace });
+                }
+
+                return Ok(new Product() { ImageUrl = filename });
+            }
+            else
+            {
+                return BadRequest("No file found, Request doesn't contain a file");
+            }
         }
 
         private async Task<bool> ProductExists(int id) =>
