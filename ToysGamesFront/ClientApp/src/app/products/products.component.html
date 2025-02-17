@@ -24,7 +24,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let product of products$ | async">
-                    <td><img class="image" src="{{product.apiUrl + product.imageUrl}}" alt="Product Image"></td>
+                    <td><img class="image" src="{{product.apiUrl + product.imageUrl}}" alt="Product Image" loading="lazy"></td>
                     <td>{{product.id}}</td>
                     <td>{{product.name}}</td>
                     <td>{{product.description}}</td>

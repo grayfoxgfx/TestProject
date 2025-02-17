@@ -1,10 +1,9 @@
 import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, Subscription, of, EMPTY } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription, of } from 'rxjs';
 import { map, catchError, switchMap, finalize, tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { Product } from './models/models';
 import { ProductsHttpService } from './products-http.service';
+import { Product } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -34,9 +33,9 @@ export class ProductsService {
   }
 
   getAllProducts(): Observable<Product[]> {
-    this.isLoadingSubject.next(true);    
+    this.isLoadingSubject.next(true);
     return this.productsHttpService.getAllProducts().pipe(
-      tap(products => {        
+      tap(products => {
         this.allProductsSubject.next(products);
       }),
       finalize(() => this.isLoadingSubject.next(false))
@@ -52,7 +51,7 @@ export class ProductsService {
       }),
       catchError((err) => {
         console.error('err', err);
-        return of(undefined);
+        return of(err);
       }),
       finalize(() => this.isLoadingSubject.next(false))
     );
@@ -63,7 +62,7 @@ export class ProductsService {
     return this.productsHttpService.createProduct(newProduct).pipe(
       catchError((err) => {
         console.error('err', err);
-        return of(undefined);
+        return of(err);
       }),
       finalize(() => this.isLoadingSubject.next(false))
     );
@@ -80,7 +79,7 @@ export class ProductsService {
       }),
       catchError((err) => {
         console.error('err', err);
-        return of(undefined);
+        return of(err);
       }),
       finalize(() => this.isLoadingSubject.next(false))
     );
@@ -96,7 +95,7 @@ export class ProductsService {
       }),
       catchError((err) => {
         console.error('err', err);
-        return of(undefined);
+        return of(err);
       }),
       finalize(() => this.isLoadingSubject.next(false))
     );

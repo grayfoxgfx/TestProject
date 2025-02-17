@@ -1,28 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { AddProductComponent } from '../add-product/add-product.component';
-import { ConfirmationDialogService } from '../confirmation-dialog.service';
+import { ConfirmationDialogService } from '../services/confirmation-dialog.service';
 import { EditProductComponent } from '../edit-product/edit-product.component';
-import { MessageService } from '../message.service';
+import { MessageService } from '../services/message.service';
 import { Product } from '../models/models';
-import { ProductsService } from '../products.service';
+import { ProductsService } from '../services/products.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  styleUrls: ['./products.component.scss'],
+  imports: [
+      FormsModule,
+      NgbModule,
+      CommonModule,
+      ReactiveFormsModule,
+    ],
 })
 export class ProductsComponent implements OnInit {
-  productForm: FormGroup;
-  hasError: boolean;
+  productForm?: FormGroup;
+  hasError?: boolean;
   isLoading$: Observable<boolean>;
   products$: Observable<Product[]>;
   public progress: number = 0;
   public fileName: string = '';
-  public file: File;
+  public file?: File;
   public products: Product[] = [];
 
   // private fields
@@ -39,12 +45,13 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllProducts();
     console.log(this.products);
   }
 
   // convenience getter for easy access to form fields
   get f() {
-    return this.productForm.controls;
+    return this.productForm?.controls;
   }
 
   public addProduct() {
@@ -64,12 +71,12 @@ export class ProductsComponent implements OnInit {
     modalRef.result.then((message: string) => {
       this.messages.showSuccess(message, 'Information');
       this.getAllProducts();
-    }).catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Warning'));    
+    }).catch(() => this.messages.showInfo('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)','Warning'));
   }
 
   public confirmDeleteProduct(product: Product) {
     this.confirmationService.confirm('Warning', '¿Are you sure to delete this item?')
-      .then((confirmed) => {        
+      .then((confirmed) => {
         if (confirmed) {
           this.deleteProduct(product);
         }

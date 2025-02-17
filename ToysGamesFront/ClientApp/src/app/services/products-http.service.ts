@@ -1,9 +1,12 @@
+
 import { HttpClient, HttpEvent, HttpEventType, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { Product } from './models/models';
+import { environment } from '../../environments/environment';
+import { Product } from '../models/models';
+
+
 let API_PRODUCTS_URL: string = environment.apiUrl + "/api/products/";
 let API_IMAGES_URL: string = environment.apiUrl + "/images/";
 
@@ -40,7 +43,7 @@ export class ProductsHttpService {
 
   uploadProductImage(file: File): Observable<HttpEvent<Product>> {
     if (!file)
-      return;
+      return EMPTY;
     const formData = new FormData();
     formData.append(file.name, file);
 

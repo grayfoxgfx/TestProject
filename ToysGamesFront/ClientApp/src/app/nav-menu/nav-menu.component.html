@@ -3,6 +3,11 @@
     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
   >
     <div class="container">
+
+      <div>
+        {{isExpanded}}
+      </div>
+
       <a class="navbar-brand" [routerLink]="['/']">ToysGamesFront</a>
       <button
         class="navbar-toggler"
@@ -31,7 +36,7 @@
             <a class="nav-link text-dark" [routerLink]="['/products']"
               >Products</a
             >
-          </li>          
+          </li>
         </ul>
       </div>
     </div>
