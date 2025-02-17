@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30611.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProjectAPI", "TestProjectAPI\TestProjectAPI.csproj", "{D4CAE463-8522-448E-9EF4-13975D58AFA1}"
 EndProject
@@ -10,6 +10,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{960DE2D3-A399-46AE-A032-320A930649D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{3C6E066F-F39B-4A39-B574-DC4DF371EE9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{E733C984-15CA-4D2A-8635-C4354FDD9582}"
+	ProjectSection(SolutionItems) = preProject
+		DockerCommands.txt = DockerCommands.txt
+		Dockerfile = Dockerfile
+		README.md = README.md
+		runProject.bat = runProject.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

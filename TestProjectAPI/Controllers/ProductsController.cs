@@ -110,7 +110,7 @@ namespace TestProjectAPI.Controllers
                 try
                 {
                     _logger.LogInformation("Uploading product image");
-                    var filePath = Path.Combine(_host.WebRootPath, "Images", filename);
+                    var filePath = Path.Combine(_host.WebRootPath, "images", filename);
                     Console.WriteLine(Directory.CreateDirectory(Path.GetDirectoryName(filePath)));
                     Directory.CreateDirectory(Path.GetDirectoryName(filePath));
                     if (file.Length > 0)

@@ -104,9 +104,10 @@ namespace TestProjectAPI
             
             app.UseCors("AddCorsPolicy");
 
-            app.UseRouting();
-            
+
             app.UseStaticFiles();
+
+            app.UseRouting();            
 
             app.UseAuthorization();
 
