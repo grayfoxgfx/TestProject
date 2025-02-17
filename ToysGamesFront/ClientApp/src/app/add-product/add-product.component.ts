@@ -29,10 +29,12 @@ export class AddProductComponent implements OnInit {
   hasError?: boolean;
   isLoading$: Observable<boolean>;
   products$: Observable<Product[]>;
+
+  // Public fields for file and progress
   public progress: number = 0;
   public fileName: string = '';
-  public file: File | null = <File>{};
-  public products: Product[] = [];
+  public file: File | null = null;
+  public imagePreviewUrl: string | undefined; // For image preview
 
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
@@ -81,21 +83,32 @@ export class AddProductComponent implements OnInit {
   public selectFile(event: Event) {
     let files: FileList | null = (<HTMLInputElement>event.target).files;
 
-    if (files && files.length > 0 && files.item(0) != null)
+    if (files && files.length > 0 && files.item(0) != null) {
       this.file = files.item(0);
-    console.log(this.file);
+      if (this.file) this.previewImage(this.file);
+      console.log(this.file);
+    }
   }
+
+  private previewImage(file: File) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imagePreviewUrl = e.target.result; // Set the preview URL
+    };
+    reader.readAsDataURL(file); // Read the selected file
+  }
+
   public postFile(file: File) {
     this.progress = 0;
     const postImageSubscr = this.productService
       .uploadProductImage(file)
       .subscribe({
         next: (event: HttpEvent<Product>) => {
-          if (event.type === HttpEventType.UploadProgress && event.total)
+          if (event.type === HttpEventType.UploadProgress && event.total) {
             this.progress = Math.round(
               (100 * event.loaded) / (event.total || 1)
             );
-          else if (event.type === HttpEventType.Response) {
+          } else if (event.type === HttpEventType.Response) {
             let img: Product | null = event.body;
             let productModel = new Product();
             productModel.name = this.f?.['name'].value;
