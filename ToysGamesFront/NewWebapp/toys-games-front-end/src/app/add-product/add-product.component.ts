@@ -17,12 +17,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss'],
-  imports: [
-    FormsModule,
-    NgbModule,
-    CommonModule,
-    ReactiveFormsModule,
-  ],
+  imports: [FormsModule, NgbModule, CommonModule, ReactiveFormsModule],
 })
 export class AddProductComponent implements OnInit {
   // convenience getter for easy access to form fields
@@ -111,40 +106,6 @@ export class AddProductComponent implements OnInit {
 
             productModel.imageUrl = img?.imageUrl || '';
 
-            this.productService.createProduct(productModel).subscribe(
-              (createdProduct) => {
-                console.log(createdProduct);
-                this.activeModal.close('Product created! ' + createdProduct.id);
-              },
-              (error) => {
-                console.log(error);
-              }
-            );
-          }
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
-    this.unsubscribe.push(postImageSubscr);
-
-    let postImageSubscrw3 = this.productService
-      .uploadProductImage(file)
-      .subscribe({
-        next: (event) => {
-          if (event.type === HttpEventType.UploadProgress && event.total)
-            this.progress = Math.round((100 * event.loaded) / event.total);
-          else if (event.type === HttpEventType.Response) {
-            let img: Product | null = event.body;
-            let productModel = new Product();
-            productModel.name = this.f['name'].value;
-            productModel.company = this.f['company'].value;
-            productModel.description = this.f['description'].value;
-            productModel.ageRestriction = +this.f['ageRestriction'].value;
-            productModel.price = +this.f['price'].value;
-
-            if (img) productModel.imageUrl = img.imageUrl;
-
             this.productService.createProduct(productModel).subscribe({
               next: (createdProduct) => {
                 console.log(createdProduct);
@@ -160,6 +121,7 @@ export class AddProductComponent implements OnInit {
           console.log(error);
         },
       });
+
     this.unsubscribe.push(postImageSubscr);
   }
 

@@ -97,7 +97,7 @@
       <div class="form-group">
           <label for="image">
               Profile Picture:
-              <img class="image" [src]="product.apiUrl + product.imageUrl" alt="Product Image" loading="lazy"  srcset="image-small.jpg 500w, image-medium.jpg 1000w, image-large.jpg 2000w">
+              <img class="image" [src]="product.apiUrl + product.imageUrl" alt="Product Image" loading="lazy">
               <input type="file" id="image" formControlName="image" class="form-control-file" accept=".jpg, .png" (change)="selectFile($event)" aria-describedby="image-help" />
           </label>
       </div>
