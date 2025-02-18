@@ -23,12 +23,12 @@ stages:
           - task: Docker@2
             inputs:
               command: 'login'
-              containerRegistry: '$(dockerRegistry)'
+              containerRegistry: 'testproject-acr-connection'  # Nombre de la conexión de servicio para ACR
 
           # Paso 2: Construir y publicar la imagen de Docker para la API .NET Core
           - task: Docker@2
             inputs:
-              containerRegistry: '$(dockerRegistry)'
+              containerRegistry: 'testproject-acr-connection'  # Usa la conexión de servicio
               repository: '$(apiImageName)'
               command: 'buildAndPush'
               Dockerfile: 'Dockerfile'  # Ruta al Dockerfile de la API
@@ -39,7 +39,7 @@ stages:
           # Paso 3: Construir y publicar la imagen de Docker para el frontend Angular
           - task: Docker@2
             inputs:
-              containerRegistry: '$(dockerRegistry)'
+              containerRegistry: 'testproject-acr-connection'  # Usa la conexión de servicio
               repository: '$(webImageName)'
               command: 'buildAndPush'
               Dockerfile: 'ToysGamesFront/ClientApp/Dockerfile'  # Ruta al Dockerfile del frontend Angular
