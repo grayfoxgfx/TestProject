@@ -1,8 +1,4 @@
 @echo off
-cd "ToysGamesFront\ClientApp"
-start cmd /k ng serve
-
-cd "../../"
 
 :: Ensure we are in the correct directory
 cd /d "%~dp0\TestProject"

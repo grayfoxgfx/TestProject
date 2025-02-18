@@ -16,7 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{E733C984-1
 		DockerCommands.txt = DockerCommands.txt
 		Dockerfile = Dockerfile
 		README.md = README.md
-		runProject.bat = runProject.bat
+		runProjectBack.bat = runProjectBack.bat
+		runProjectFront.bat = runProjectFront.bat
 	EndProjectSection
 EndProject
 Global
